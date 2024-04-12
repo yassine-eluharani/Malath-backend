@@ -11,18 +11,17 @@ model User {
   id      String     @id
   first_name String?
   last_name   String?
-  username   String?
   email     String?   @unique
   phone_number String? @unique
   status    Status   @default(ACTIVE)
   hasImage  Boolean  @default(false)
   image_url String?
-  verified  Boolean @default(false)
+  identity_verified  Boolean @default(false)
 
   created_at DateTime 
   updated_at DateTime @default(now())
 
-  @@index([phoneNumber, verified])
+  @@index([phone_number ])
 }
 
 enum Status {

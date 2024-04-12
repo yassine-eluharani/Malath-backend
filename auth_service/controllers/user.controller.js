@@ -9,19 +9,18 @@ const registerWebHook = async function(req, res) {
 
     const wh = new Webhook(process.env.WEBHOOK_SECRET);
     const evt = wh.verify(payloadString, svixHeaders);
-    // console.log("Event from webhooks object------: ", evt.data)
     const { id, ...attributes } = evt.data;
-    const clerkId = attributes.phone_numbers[0].id;
 
     // Handle the webhooks
     const eventType = evt.type;
     if (eventType === 'user.created') {
       await Service.saveUser(
+        id,
         attributes,
         res
       );
     } else if (eventType === 'user.deleted') {
-      await Service.deleteUserByClerkId(clerkId);
+      await Service.deleteUserByClerkId(id);
     } else if (eventType === 'user.updated') {
       console.log(`User ${id} was ${eventType}`);
     } else {

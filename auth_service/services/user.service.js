@@ -2,36 +2,39 @@ const PrismaClient = require('@prisma/client').PrismaClient
 
 const prisma = new PrismaClient()
 
-const saveUser = async (attributes, res) => {
+const saveUser = async (id, attributes, res) => {
   try {
     const {
-      created_at,
       first_name,
       last_name,
-      profile_image_url,
+      image_url,
     } = attributes
 
-    const phoneNumber = attributes.phoneNumbers[0].phoneNumber;
-    const clerkId = attributes.email_addresses[0].id;
+    const phone_number = attributes.phone_numbers[0].phone_number;
+    const email = (attributes?.email_addresses && attributes.email_addresses.length > 0) ? attributes.email_addresses[0].email_address : null;
+    const created_at = new Date(attributes.created_at);
+    const updated_at = new Date(attributes.updated_at);
 
     const existingUser = await prisma.user.findUnique({
-      where: { email },
+      where: { phone_number },
     });
 
     if (existingUser) {
-      console.log("User with the same email already exists:", existingUser);
-      res.status(409).json({ error: "User with the same email already exists" });
+      console.log("User with the same phone number already exists:", existingUser);
+      res.status(409).json({ error: "User with the same phone number already exists" });
       return;
     }
 
     await prisma.user.create({
       data: {
-        clerkId,
+        id,
         first_name,
         last_name,
-        phoneNumber,
-        profileImage: profile_image_url,
-        createdAt: created_at,
+        image_url,
+        created_at,
+        updated_at,
+        phone_number,
+        email
       },
     });
     res.json({ message: "User synced successfully" });
@@ -42,10 +45,10 @@ const saveUser = async (attributes, res) => {
 };
 
 
-const deleteUserByClerkId = async (clerkId) => {
+const deleteUserByClerkId = async (id) => {
   try {
     const user = await prisma.user.findUnique({
-      where: { clerkId },
+      where: { id },
     });
 
     if (!user) {
@@ -54,10 +57,10 @@ const deleteUserByClerkId = async (clerkId) => {
     }
 
     await prisma.user.delete({
-      where: { clerkId },
+      where: { id },
     });
 
-    console.log(`User with clerkId ${clerkId} deleted successfully`);
+    console.log(`User with id ${id} deleted successfully`);
     return true; // Return true to indicate successful deletion
   } catch (error) {
     console.error("Error deleting user:", error);
