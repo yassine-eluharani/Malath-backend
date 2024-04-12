@@ -7,15 +7,9 @@ const bodyParser = require('body-parser');
 
 // Public routes
 router.post(
-  "/webhook",
+  "/register/webhook",
   bodyParser.raw({ type: 'application/json' }),
   Controller.registerWebHook
-);
-
-
-router.post(
-  "/register/phone",
-  Controller.registerPhone
 );
 
 module.exports = router;
