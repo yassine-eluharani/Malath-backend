@@ -61,10 +61,10 @@ const deleteUserByClerkId = async (id) => {
     });
 
     console.log(`User with id ${id} deleted successfully`);
-    return true; // Return true to indicate successful deletion
+    return true;
   } catch (error) {
     console.error("Error deleting user:", error);
-    return false; // Return false or handle accordingly if there's an error
+    return false;
   }
 };
 
