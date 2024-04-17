@@ -1,5 +1,4 @@
 const PrismaClient = require('@prisma/client').PrismaClient
-
 const prisma = new PrismaClient()
 
 const saveUser = async (id, attributes, res) => {
@@ -25,18 +24,18 @@ const saveUser = async (id, attributes, res) => {
       return;
     }
 
-    await prisma.user.create({
-      data: {
-        id,
-        first_name,
-        last_name,
-        image_url,
-        created_at,
-        updated_at,
-        phone_number,
-        email
-      },
-    });
+    // await prisma.user.create({
+    //   data: {
+    //     id,
+    //     first_name,
+    //     last_name,
+    //     image_url,
+    //     created_at,
+    //     updated_at,
+    //     phone_number,
+    //     email
+    //   },
+    // });
     res.json({ message: "User synced successfully" });
   } catch (error) {
     console.error("Error creating user:", error);
@@ -68,10 +67,20 @@ const deleteUserByClerkId = async (id) => {
   }
 };
 
+const getAllUsers = async () => {
+  try {
+    const users = await prisma.user.findMany();
+    return users;
+  } catch (error) {
+    throw new Error("Error fetching users: " + error.message);
+  }
+}
+
 
 
 module.exports = {
   saveUser,
   deleteUserByClerkId,
+  getAllUsers
 };
 

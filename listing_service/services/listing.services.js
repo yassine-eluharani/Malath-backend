@@ -1,12 +1,13 @@
-// const PrismaClient = require('@prisma/client').PrismaClient
-// const prisma = new PrismaClient()
+const PrismaClient = require('@prisma/client').PrismaClient
+const prisma = new PrismaClient()
 
-const getAllListings = async (res) => {
+const getAllListings = async () => {
   try {
-    res.json({ message: "All listing synced successfully" });
+    const listings = await prisma.listing.findMany();
+    return listings;
   } catch (error) {
-    console.error("Error creating user:", error);
-    res.status(500).json({ error: "Internal Server Error" });
+    throw new Error("Error fetching users: " + error.message);
+
   }
 };
 

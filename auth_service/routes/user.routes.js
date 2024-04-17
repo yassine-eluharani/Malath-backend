@@ -12,4 +12,12 @@ router.post(
   Controller.registerWebHook
 );
 
+router.get(
+  "/",
+  Controller.getAllUsers
+);
+
+
+
+
 module.exports = router;

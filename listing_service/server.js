@@ -16,7 +16,7 @@ app.get('/', async (req, res) => {
 
 app.use("/api/listings", routes)
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}`)

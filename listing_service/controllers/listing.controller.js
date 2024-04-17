@@ -2,7 +2,11 @@ const Service = require("../services/listing.services");
 
 const getListings = async function(req, res) {
   try {
-    await Service.getAllListings(res);
+    const listings = await Service.getAllListings();
+    if (listings.length === 0) {
+      return res.status(404).json({ message: "No listings found" }); // If no listing found, return a message
+    }
+    return res.status(200).json(listings); // If listing found, return them
   } catch (err) {
     res.status(400).json({
       success: false,
