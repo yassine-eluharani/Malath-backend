@@ -1,9 +1,17 @@
 # Ignore .env files
 .env
 
-# Ignore node_modules folder
+# Ignore node_modules folders
 node_modules/
 
 # Ignore .DS_Store files
 .DS_Store
+
+# Ignore .env files in user_service and listing_service directories
+user_service/.env
+listing_service/.env
+
+# Ignore node_modules folders in user_service and listing_service directories
+user_service/node_modules/
+listing_service/node_modules/
 
