@@ -24,8 +24,12 @@ services:
     build: 
       context: ./user_service
       dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
 
   listing-service:
     build: 
       context: ./listing_service/
       dockerfile: Dockerfile
+    ports:
+      - "3002:3002"
