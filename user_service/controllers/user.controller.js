@@ -11,7 +11,6 @@ const registerWebHook = async function(req, res) {
     const evt = wh.verify(payloadString, svixHeaders);
     const { id, ...attributes } = evt.data;
 
-    // Handle the webhooks
     const eventType = evt.type;
     if (eventType === 'user.created') {
       await Service.saveUser(
@@ -41,9 +40,9 @@ const registerWebHook = async function(req, res) {
 
 const getAllUsers = async function(req, res) {
   try {
-    const users = await Service.getAllUsers(); // Call the service function to get users
+    const users = await Service.getAllUsers();
     if (users.length === 0) {
-      return res.status(404).json({ message: "No users found" }); // If no users found, return a message
+      return res.status(404).json({ message: "No users found" });
     }
     return res.status(200).json(users); // If users found, return them
   } catch (error) {

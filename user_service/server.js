@@ -11,7 +11,7 @@ const app = express()
 app.use(cors());
 
 app.get('/', async (req, res) => {
-  res.json({ message: 'Hello World' });
+  res.json({ message: 'User service!!' });
 })
 
 app.use("/api/user", routes)
