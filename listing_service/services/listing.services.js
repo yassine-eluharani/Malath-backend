@@ -12,6 +12,20 @@ const getAllListings = async () => {
 };
 
 
+const getListingByUserId = async (user_id) => {
+  try {
+    const listings = await prisma.listing.findMany({
+      where: {
+        user_id: user_id
+      }
+    });
+    return listings;
+  } catch (error) {
+    throw new Error("Error fetching users: " + error.message);
+  }
+}
+
+
 const newListing = async (body, res) => {
   try {
     const parsedBody = JSON.parse(body.toString());
@@ -28,7 +42,8 @@ const newListing = async (body, res) => {
 
 module.exports = {
   getAllListings,
-  newListing
+  newListing,
+  getListingByUserId
 };
 
 

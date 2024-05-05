@@ -8,13 +8,20 @@ const bodyParser = require('body-parser');
 router.get(
   "/",
   bodyParser.raw({ type: 'application/json' }),
-  Controller.getListings
+  Controller.getListingsHandler
 );
+
+router.get(
+  "/:user_id",
+  bodyParser.raw({ type: 'application/json' }),
+  Controller.getListingByUserIdHandler
+);
+
 
 router.post(
   "/new",
   bodyParser.raw({ type: 'application/json' }),
-  Controller.newListing
+  Controller.newListingHandler
 );
 
 module.exports = router;

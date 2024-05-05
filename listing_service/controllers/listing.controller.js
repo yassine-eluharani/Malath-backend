@@ -1,12 +1,26 @@
 const Service = require("../services/listing.services");
 
-const getListings = async function(req, res) {
+const getListingsHandler = async function(req, res) {
   try {
     const listings = await Service.getAllListings();
     if (listings.length === 0) {
       return res.status(404).json({ message: "No listing found" });
     }
-    return res.status(200).json(users);
+    return res.status(200).json(listings);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return res.status(500).json({ message: "Internal Server Error" }); // Handle errors
+  }
+}
+
+const getListingByUserIdHandler = async function(req, res) {
+  try {
+    const { user_id } = req.params;
+    const listings = await Service.getListingByUserId(user_id);
+    if (listings.length === 0) {
+      return res.status(404).json({ message: "No listing found" });
+    }
+    return res.status(200).json(listings);
   } catch (error) {
     console.error("Error fetching users:", error);
     return res.status(500).json({ message: "Internal Server Error" }); // Handle errors
@@ -14,7 +28,7 @@ const getListings = async function(req, res) {
 }
 
 
-const newListing = async function(req, res) {
+const newListingHandler = async function(req, res) {
   try {
     const { body } = req;
     await Service.newListing(body, res);
@@ -26,7 +40,8 @@ const newListing = async function(req, res) {
 
 
 module.exports = {
-  getListings,
-  newListing
+  getListingsHandler,
+  newListingHandler,
+  getListingByUserIdHandler
 }
 
