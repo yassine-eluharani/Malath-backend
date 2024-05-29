@@ -41,6 +41,7 @@ const newListing = async (body, res) => {
       bathrooms,
       regular_amenities,
       photos,
+      photos_blob,
       title,
       description,
       square_feet,
@@ -51,6 +52,9 @@ const newListing = async (body, res) => {
       safety_items,
       user_id
     } = parsedBody;
+
+    const photosBuffer = photos_blob.map(photo => Buffer.from(photo, 'base64'));
+
     const listing = await prisma.listing.create({
       data: {
         type_of_listing,
@@ -64,6 +68,7 @@ const newListing = async (body, res) => {
         bathrooms,
         regular_amenities,
         photos,
+        photos_blob: photosBuffer,
         title,
         description,
         square_feet,

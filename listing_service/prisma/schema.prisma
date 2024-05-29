@@ -20,6 +20,7 @@ model Listing {
   bathrooms            Int
   regular_amenities    String[]
   photos               String[]
+  photos_blob          Bytes[]
   title                String
   description          String
   square_feet          Int
