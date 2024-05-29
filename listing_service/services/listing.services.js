@@ -29,15 +29,63 @@ const getListingByUserId = async (user_id) => {
 const newListing = async (body, res) => {
   try {
     const parsedBody = JSON.parse(body.toString());
+    const {
+      type_of_listing,
+      address,
+      city,
+      block,
+      coords,
+      guests,
+      bedrooms,
+      beds,
+      bathrooms,
+      regular_amenities,
+      photos,
+      title,
+      description,
+      square_feet,
+      price_nightly,
+      price_weekly,
+      price_monthly,
+      deposit,
+      safety_items,
+      user_id
+    } = parsedBody;
+    const listing = await prisma.listing.create({
+      data: {
+        type_of_listing,
+        address,
+        city,
+        block,
+        coords,
+        guests,
+        bedrooms,
+        beds,
+        bathrooms,
+        regular_amenities,
+        photos,
+        title,
+        description,
+        square_feet,
+        price_nightly,
+        price_weekly,
+        price_monthly,
+        deposit,
+        safety_items,
+        user_id
+      },
+    });
+
     res.json({
       message: "New listing created successfully",
-      body: parsedBody
+      listing: listing
     });
   } catch (error) {
-    console.error("Error deleting user:", error);
-    return false;
+    console.error("Error creating listing:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 
 
 module.exports = {
