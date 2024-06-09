@@ -11,7 +11,6 @@ const getAllListings = async () => {
   }
 };
 
-
 const getListingByUserId = async (user_id) => {
   try {
     const listings = await prisma.listing.findMany({
@@ -20,6 +19,19 @@ const getListingByUserId = async (user_id) => {
       }
     });
     return listings;
+  } catch (error) {
+    throw new Error("Error fetching users: " + error.message);
+  }
+}
+
+const getListingByListingId = async (listing_id) => {
+  try {
+    const listing = await prisma.listing.findUnique({
+      where: {
+        id: listing_id
+      }
+    });
+    return listing;
   } catch (error) {
     throw new Error("Error fetching users: " + error.message);
   }
@@ -96,7 +108,8 @@ const newListing = async (body, res) => {
 module.exports = {
   getAllListings,
   newListing,
-  getListingByUserId
+  getListingByUserId,
+  getListingByListingId
 };
 
 

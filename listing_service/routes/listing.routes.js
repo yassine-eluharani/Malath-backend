@@ -12,11 +12,16 @@ router.get(
 );
 
 router.get(
-  "/:user_id",
+  "/user/:user_id",
   bodyParser.raw({ type: 'application/json' }),
   Controller.getListingByUserIdHandler
 );
 
+router.get(
+  "/listing/:listing_id",
+  bodyParser.raw({ type: 'application/json' }),
+  Controller.getListingByListingIdHandler
+);
 
 router.post(
   "/new",

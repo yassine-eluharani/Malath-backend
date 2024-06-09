@@ -28,6 +28,18 @@ const getListingByUserIdHandler = async function(req, res) {
 }
 
 
+const getListingByListingIdHandler = async function(req, res) {
+  try {
+    const { listing_id } = req.params;
+    const listing = await Service.getListingByListingId(listing_id);
+    return res.status(200).json(listing);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return res.status(500).json({ message: "Internal Server Error" }); // Handle errors
+  }
+}
+
+
 const newListingHandler = async function(req, res) {
   try {
     const { body } = req;
@@ -42,6 +54,7 @@ const newListingHandler = async function(req, res) {
 module.exports = {
   getListingsHandler,
   newListingHandler,
-  getListingByUserIdHandler
+  getListingByUserIdHandler,
+  getListingByListingIdHandler
 }
 
