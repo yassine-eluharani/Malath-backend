@@ -33,3 +33,10 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3002:3002"
+
+  booking-service:
+    build: 
+      context: ./booking_service/
+      dockerfile: Dockerfile
+    ports:
+      - "3003:3003"
