@@ -6,7 +6,7 @@ const getAllBookings = async () => {
     const bookings = await prisma.booking.findMany();
     return bookings;
   } catch (error) {
-    throw new Error("Error fetching users: " + error.message);
+    throw new Error("Error fetching booking: " + error.message);
 
   }
 };

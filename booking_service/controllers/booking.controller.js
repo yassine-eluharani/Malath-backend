@@ -9,7 +9,7 @@ const getAllBookingsHandler = async function(req, res) {
     return res.status(200).json(bookings);
   } catch (error) {
     console.error("Error fetching users:", error);
-    return res.status(500).json({ message: "Internal Server Error" }); // Handle errors
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 }
 
