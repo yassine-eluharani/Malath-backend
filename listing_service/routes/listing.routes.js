@@ -18,7 +18,7 @@ router.get(
 );
 
 router.get(
-  "/listing/:listing_id",
+  "/:listing_id",
   bodyParser.raw({ type: 'application/json' }),
   Controller.getListingByListingIdHandler
 );

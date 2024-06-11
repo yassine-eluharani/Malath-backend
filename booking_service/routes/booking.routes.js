@@ -11,6 +11,19 @@ router.get(
   Controller.getAllBookingsHandler
 );
 
+router.get(
+  "/user/:user_id",
+  bodyParser.raw({ type: 'application/json' }),
+  Controller.getBookingByUserIdHandler
+);
+
+router.get(
+  "/:booking_id",
+  bodyParser.raw({ type: 'application/json' }),
+  Controller.getBookingByIdHandler
+);
+
+
 router.post(
   "/new",
   bodyParser.raw({ type: 'application/json' }),

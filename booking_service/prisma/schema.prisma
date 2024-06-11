@@ -8,8 +8,7 @@ datasource db {
 }
 
 model Booking {
-  id             String   @id @default(uuid())
-  booking_id     String   @unique
+  booking_id             String   @id @default(uuid()) @unique
   user_id        String
   listing_id     String
   payment_id     String

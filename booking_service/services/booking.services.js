@@ -11,67 +11,56 @@ const getAllBookings = async () => {
   }
 };
 
+const getBookingByUserId = async (user_id) => {
+  try {
+    const booking = await prisma.booking.findMany({
+      where: {
+        user_id: user_id
+      }
+    });
+    return booking;
+  } catch (error) {
+    throw new Error("Error fetching users: " + error.message);
+  }
+}
+
+const getBookingById = async (booking_id) => {
+  try {
+    const booking = await prisma.booking.findUnique({
+      where: {
+        booking_id: booking_id
+      }
+    });
+    return booking;
+  } catch (error) {
+    throw new Error("Error fetching users: " + error.message);
+  }
+}
+
+
 const newBooking = async (body, res) => {
   try {
+    // Parse the request body
     const parsedBody = JSON.parse(body.toString());
-    // const {
-    //   type_of_listing,
-    //   address,
-    //   city,
-    //   block,
-    //   coords,
-    //   guests,
-    //   bedrooms,
-    //   beds,
-    //   bathrooms,
-    //   regular_amenities,
-    //   photos,
-    //   photos_blob,
-    //   title,
-    //   description,
-    //   square_feet,
-    //   price_nightly,
-    //   price_weekly,
-    //   price_monthly,
-    //   deposit,
-    //   safety_items,
-    //   user_id
-    // } = parsedBody;
-    //
-    // const photosBuffer = photos_blob.map(photo => Buffer.from(photo, 'base64'));
-    //
-    // const listing = await prisma.listing.create({
-    //   data: {
-    //     type_of_listing,
-    //     address,
-    //     city,
-    //     block,
-    //     coords,
-    //     guests,
-    //     bedrooms,
-    //     beds,
-    //     bathrooms,
-    //     regular_amenities,
-    //     photos,
-    //     photos_blob: photosBuffer,
-    //     title,
-    //     description,
-    //     square_feet,
-    //     price_nightly,
-    //     price_weekly,
-    //     price_monthly,
-    //     deposit,
-    //     safety_items,
-    //     user_id
-    //   },
-    // });
-
+    const { user_id, listing_id, payment_id, check_in_date, check_out_date, status } = parsedBody;
+    // Create a new booking using the Prisma client
+    const booking = await prisma.booking.create({
+      data: {
+        user_id: user_id,
+        listing_id: listing_id,
+        payment_id: payment_id,
+        check_in_date: new Date(check_in_date),
+        check_out_date: new Date(check_out_date),
+        status: status,
+      },
+    });
+    // Send success response
     res.json({
-      message: "New listing created successfully",
-      listing: listing
+      message: "New booking created successfully",
+      booking: booking,
     });
   } catch (error) {
-    console.error("Error creating listing:", error);
+    console.error("Error creating booking:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -80,7 +69,9 @@ const newBooking = async (body, res) => {
 
 module.exports = {
   getAllBookings,
-  newBooking
+  newBooking,
+  getBookingByUserId,
+  getBookingById
 };
 
 
