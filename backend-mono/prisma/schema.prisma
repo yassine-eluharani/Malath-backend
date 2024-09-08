@@ -1,0 +1,106 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                 String      @id @default(uuid())
+  first_name         String?
+  last_name          String?
+  phone_number       String?
+  email              String?     @unique
+  status             Status      @default(ACTIVE)
+  profile_picture    String?
+  identity_verified  Boolean     @default(false)
+  scanned_id         String?
+  created_at         DateTime    @default(now())
+  updated_at         DateTime    @default(now())
+  
+  // Relations
+  listings           Listing[]   // A user can have multiple listings
+  reviews            Review[]    // A user can have multiple reviews
+  bookings           Booking[]   // A user can have multiple bookings
+}
+
+enum Status {
+  ACTIVE
+  INACTIVE
+}
+
+model Listing {
+  id                   String      @id @default(uuid())
+  type_of_listing      ListingType
+  address              String
+  city                 String
+  block                String?     
+  coords               String
+  guests               Int
+  bedrooms             Int
+  beds                 Int
+  bathrooms            Int
+  regular_amenities    String[]
+  photos               String[]
+  photos_blob          Bytes[]
+  thumbnail            String?     
+  title                String
+  description          String
+  square_feet          Int?        
+  price_nightly        Float
+  price_weekly         Float?      
+  price_monthly        Float?      
+  deposit              Float?      
+  safety_items         String[]
+  created_at           DateTime    @default(now())
+  updated_at           DateTime    @default(now())
+
+  // Relations
+  user_id              String
+  user                 User        @relation(fields: [user_id], references: [id])
+  reviews              Review[]    // A listing can have multiple reviews
+  bookings             Booking[]   // A listing can have multiple bookings
+}
+
+enum ListingType {
+  CHALET
+  FARM
+  LOUNGE
+  TENT
+  BARN
+}
+
+model Review {
+  id                   String      @id @default(uuid())
+  overall_rating       Float
+  cleanliness_rating   Float
+  location_rating      Float
+  communication_rating Float
+  comments             String?
+
+  // Relations
+  user_id              String
+  user                 User        @relation(fields: [user_id], references: [id])
+  listing_id           String
+  listing              Listing     @relation(fields: [listing_id], references: [id])
+}
+
+model Booking {
+  booking_id           String      @id @default(uuid()) @unique
+  check_in_date        DateTime
+  check_out_date       DateTime
+  status               String
+  created_at           DateTime    @default(now())
+  updated_at           DateTime    @updatedAt
+
+  // Relations
+  user_id              String
+  user                 User        @relation(fields: [user_id], references: [id])
+  listing_id           String
+  listing              Listing     @relation(fields: [listing_id], references: [id])
+}
+
+
+
