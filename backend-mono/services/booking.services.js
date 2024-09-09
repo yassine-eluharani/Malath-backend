@@ -1,5 +1,7 @@
-const PrismaClient = require('@prisma/client').PrismaClient
-const prisma = new PrismaClient()
+const prisma = require('../utils/prismaClient');
+const { checkIfUserExists } = require('../utils/userUtils');
+const { checkIfListingExists } = require('../utils/listingUtils');
+
 
 const getAllBookings = async () => {
   try {
@@ -38,30 +40,39 @@ const getBookingById = async (booking_id) => {
 }
 
 
-const newBooking = async (body, res) => {
+const newBooking = async (body) => {
   try {
-    // Parse the request body
     const parsedBody = JSON.parse(body.toString());
     const { user_id, listing_id, payment_id, check_in_date, check_out_date, status } = parsedBody;
+
+    // Check if the user exists
+    const userExists = await checkIfUserExists(user_id);
+    if (!userExists) {
+      return "User not found. Cannot create booking without a valid user.";
+    }
+
+    // Check if the listing exists
+    const listingExists = await checkIfListingExists(listing_id);
+    if (!listingExists) {
+      return "Listing not found. Cannot create booking without a valid listing.";
+    }
+
     // Create a new booking using the Prisma client
     const booking = await prisma.booking.create({
       data: {
-        user_id: user_id,
-        listing_id: listing_id,
-        payment_id: payment_id,
+        user_id,
+        listing_id,
+        payment_id,
         check_in_date: new Date(check_in_date),
         check_out_date: new Date(check_out_date),
-        status: status,
+        status,
       },
     });
-    // Send success response
-    res.json({
-      message: "New booking created successfully",
-      booking: booking,
-    });
+
+    return booking;
+
   } catch (error) {
-    console.error("Error creating booking:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    throw new Error("Error creating booking: " + error.message);
   }
 };
 
