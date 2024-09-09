@@ -1,5 +1,5 @@
-const PrismaClient = require('@prisma/client').PrismaClient
-const prisma = new PrismaClient()
+const prisma = require('../utils/prismaClient');
+const { checkIfUserExists } = require('../utils/userUtils');
 
 const getAllListings = async () => {
   try {
@@ -38,7 +38,7 @@ const getListingByListingId = async (listing_id) => {
 }
 
 
-const newListing = async (body, res) => {
+const newListing = async (body) => {
   try {
     const parsedBody = JSON.parse(body.toString());
     const {
@@ -64,6 +64,12 @@ const newListing = async (body, res) => {
       safety_items,
       user_id
     } = parsedBody;
+
+    const userExists = await checkIfUserExists(user_id);
+
+    if (!userExists) {
+      return "User not found. Cannot create listing without a valid user."
+    }
 
     const photosBuffer = photos_blob.map(photo => Buffer.from(photo, 'base64'));
 
@@ -92,14 +98,10 @@ const newListing = async (body, res) => {
         user_id
       },
     });
+    return listing;
 
-    res.json({
-      message: "New listing created successfully",
-      listing: listing
-    });
   } catch (error) {
-    console.error("Error creating listing:", error);
-    res.status(500).json({ message: "Internal Server Error" });
+    throw new Error("Error fetching users: " + error.message);
   }
 };
 
