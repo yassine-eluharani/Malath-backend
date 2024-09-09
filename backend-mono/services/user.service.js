@@ -37,6 +37,7 @@ const saveUser = async (attributes) => {
       },
     });
 
+    console.log(`User with id ${id} created successfully`);
     return `User with id ${id} created successfully`
 
   } catch (error) {
@@ -58,11 +59,11 @@ const deleteUserByClerkId = async (attributes) => {
       return "User not found";
     }
 
-    console.log("Deleting user with id before prisma action:", id);
     await prisma.user.delete({
       where: { id },
     });
 
+    console.log(`User with id ${id} deleted successfully`);
     return `User with id ${id} deleted successfully`
 
   } catch (error) {
@@ -105,6 +106,7 @@ const updateUserByClerkId = async (attributes) => {
       },
     });
 
+    console.log(`User with id ${id} updated successfully`);
     return `User with id ${id} updated successfully`
 
   } catch (error) {
@@ -121,7 +123,6 @@ const getAllUsers = async () => {
     throw new Error("Error fetching users: " + error.message);
   }
 }
-
 
 
 module.exports = {

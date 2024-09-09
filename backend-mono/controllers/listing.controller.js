@@ -4,7 +4,7 @@ const getListingsHandler = async function(req, res) {
   try {
     const listings = await Service.getAllListings();
     if (listings.length === 0) {
-      return res.status(404).json({ message: "No listing found" });
+      return res.status(200).json({ message: "No listing found" });
     }
     return res.status(200).json(listings);
   } catch (error) {
