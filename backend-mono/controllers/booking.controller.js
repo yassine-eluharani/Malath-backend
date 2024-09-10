@@ -36,6 +36,10 @@ const getBookingByIdHandler = async function(req, res) {
   try {
     const { booking_id } = req.params;
     const booking = await Service.getBookingById(booking_id);
+    if (booking === null) {
+      console.log("No booking found");
+      return res.status(200).json({ message: "No booking found" });
+    }
     console.log("Booking id returned:", booking_id);
     return res.status(200).json(booking);
   } catch (error) {
