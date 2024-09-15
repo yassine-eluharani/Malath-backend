@@ -1,4 +1,4 @@
-const prisma = require('../utils/prismaClient');
+const prisma = require('../config/prismaClient');
 const { checkIfUserExists } = require('../utils/userUtils');
 const { checkIfListingExists } = require('../utils/listingUtils');
 
@@ -42,8 +42,7 @@ const getBookingById = async (booking_id) => {
 
 const newBooking = async (body) => {
   try {
-    const parsedBody = JSON.parse(body.toString());
-    const { user_id, listing_id, payment_id, check_in_date, check_out_date, status } = parsedBody;
+    const { user_id, listing_id, payment_id, check_in_date, check_out_date, status } = body;
 
     // Check if the user exists
     const userExists = await checkIfUserExists(user_id);

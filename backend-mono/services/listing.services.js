@@ -1,4 +1,5 @@
-const prisma = require('../utils/prismaClient');
+const prisma = require('../config/prismaClient');
+const { uploadToS3 } = require('../utils/awsUtils');
 const { checkIfUserExists } = require('../utils/userUtils');
 
 const getAllListings = async () => {
@@ -40,30 +41,11 @@ const getListingByListingId = async (listing_id) => {
 
 const newListing = async (body) => {
   try {
-    const parsedBody = JSON.parse(body.toString());
     const {
-      type_of_listing,
-      address,
-      city,
-      block,
-      coords,
-      guests,
-      bedrooms,
-      beds,
-      bathrooms,
-      regular_amenities,
       photos,
-      photos_blob,
-      title,
-      description,
-      square_feet,
-      price_nightly,
-      price_weekly,
-      price_monthly,
-      deposit,
-      safety_items,
-      user_id
-    } = parsedBody;
+      user_id,
+      ...otherListingFields
+    } = body;
 
     const userExists = await checkIfUserExists(user_id);
 
@@ -71,33 +53,26 @@ const newListing = async (body) => {
       return "User not found. Cannot create listing without a valid user."
     }
 
-    const photosBuffer = photos_blob.map(photo => Buffer.from(photo, 'base64'));
+    const uploadedPhotos = await Promise.all(photos.map(async (photoBase64) => {
+      // Extract MIME type and base64 data
+      const base64Data = photoBase64.split(',')[1];
+      const mimeType = photoBase64.split(';')[0].split(':')[1];
+
+      // Convert base64 to buffer
+      const fileBuffer = Buffer.from(base64Data, 'base64');
+
+      const s3Url = await uploadToS3(user_id, fileBuffer, mimeType, "malath-test");
+      return s3Url;
+    }));
 
     const listing = await prisma.listing.create({
       data: {
-        type_of_listing,
-        address,
-        city,
-        block,
-        coords,
-        guests,
-        bedrooms,
-        beds,
-        bathrooms,
-        regular_amenities,
-        photos,
-        photos_blob: photosBuffer,
-        title,
-        description,
-        square_feet,
-        price_nightly,
-        price_weekly,
-        price_monthly,
-        deposit,
-        safety_items,
-        user_id
+        ...otherListingFields,
+        user_id,
+        photos: uploadedPhotos,
       },
     });
+
     return listing;
 
   } catch (error) {

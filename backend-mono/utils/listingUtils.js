@@ -1,4 +1,4 @@
-const prisma = require('./prismaClient');
+const prisma = require('../config/prismaClient');
 
 const checkIfListingExists = async (listing_id) => {
   try {
