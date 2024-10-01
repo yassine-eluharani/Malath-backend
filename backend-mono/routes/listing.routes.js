@@ -22,7 +22,6 @@ router.get(
 
 router.get(
   "/:listing_id",
-  ClerkExpressRequireAuth(),
   bodyParser.raw({ type: 'application/json' }),
   Controller.getListingByListingIdHandler
 );
