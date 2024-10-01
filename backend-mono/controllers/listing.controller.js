@@ -50,6 +50,7 @@ const newListingHandler = async function(req, res) {
     const { body } = req;
     const listing = await Service.newListing(body, res);
 
+    // Check if the service returned an error message as a string
     if (typeof listing === "string") {
       console.log(listing);
       return res.status(400).json({ message: listing });
