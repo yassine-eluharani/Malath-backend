@@ -54,11 +54,9 @@ const newListing = async (body) => {
     }
 
     const uploadedPhotos = await Promise.all(photos.map(async (photoBase64) => {
-      // Extract MIME type and base64 data
       const base64Data = photoBase64.split(',')[1];
       const mimeType = photoBase64.split(';')[0].split(':')[1];
 
-      // Convert base64 to buffer
       const fileBuffer = Buffer.from(base64Data, 'base64');
 
       const s3Url = await uploadToS3(user_id, fileBuffer, mimeType, "malath-test");
@@ -70,6 +68,7 @@ const newListing = async (body) => {
         ...otherListingFields,
         user_id,
         photos: uploadedPhotos,
+        thumbnail: uploadedPhotos[0]
       },
     });
 
