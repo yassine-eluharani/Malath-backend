@@ -5,9 +5,10 @@ const bodyParser = require('body-parser');
 const { ClerkExpressRequireAuth } = require('@clerk/clerk-sdk-node')
 
 
-// Public routes
+// Private routes
 router.get(
   "/",
+  ClerkExpressRequireAuth(),
   bodyParser.raw({ type: 'application/json' }),
   Controller.getAllBookingsHandler
 );
@@ -22,6 +23,7 @@ router.get(
 
 router.get(
   "/listing/:listing_id",
+  ClerkExpressRequireAuth(),
   bodyParser.raw({ type: 'application/json' }),
   Controller.getBookingByListingIdHandler
 );

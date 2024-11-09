@@ -12,6 +12,12 @@ router.get(
   Controller.getListingsHandler
 );
 
+router.get(
+  "/:listing_id",
+  bodyParser.raw({ type: 'application/json' }),
+  Controller.getListingByListingIdHandler
+);
+
 // Protected routes
 router.get(
   "/user/:user_id",
@@ -20,11 +26,6 @@ router.get(
   Controller.getListingByUserIdHandler
 );
 
-router.get(
-  "/:listing_id",
-  bodyParser.raw({ type: 'application/json' }),
-  Controller.getListingByListingIdHandler
-);
 
 router.post(
   "/",
