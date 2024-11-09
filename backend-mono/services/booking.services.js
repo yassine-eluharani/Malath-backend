@@ -62,8 +62,8 @@ const newBooking = async (body) => {
       data: {
         user_id,
         listing_id,
-        check_in_date: new Date(check_in_date),
-        check_out_date: new Date(check_out_date),
+        check_in_date: new Date(check_in_date.replace(/\//g, '-')),
+        check_out_date: new Date(check_out_date.replace(/\//g, '-')),
         status,
       },
     });
