@@ -31,6 +31,22 @@ const getBookingByUserIdHandler = async function(req, res) {
   }
 }
 
+const getBookingByListingIdHandler = async function(req, res) {
+  try {
+    const { listing_id } = req.params;
+    const bookings = await Service.getBookingByListingId(listing_id);
+    if (bookings.length === 0) {
+      console.log("No booking found");
+      return res.status(200).json({ message: "No booking found" });
+    }
+    console.log("Bookings returned length:", bookings.length);
+    return res.status(200).json(bookings);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    return res.status(500).json({ message: "Internal Server Error" }); // Handle errors
+  }
+}
+
 
 const getBookingByIdHandler = async function(req, res) {
   try {
@@ -78,6 +94,7 @@ module.exports = {
   getAllBookingsHandler,
   newBookingHandler,
   getBookingByUserIdHandler,
-  getBookingByIdHandler
+  getBookingByIdHandler,
+  getBookingByListingIdHandler
 }
 

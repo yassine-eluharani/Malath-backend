@@ -26,6 +26,20 @@ const getBookingByUserId = async (user_id) => {
   }
 }
 
+const getBookingByListingId = async (listing_id) => {
+  try {
+    const booking = await prisma.booking.findMany({
+      where: {
+        listing_id: listing_id
+      }
+    });
+    return booking;
+  } catch (error) {
+    throw new Error("Error fetching users: " + error.message);
+  }
+}
+
+
 const getBookingById = async (booking_id) => {
   try {
     const booking = await prisma.booking.findUnique({
@@ -81,7 +95,8 @@ module.exports = {
   getAllBookings,
   newBooking,
   getBookingByUserId,
-  getBookingById
+  getBookingById,
+  getBookingByListingId
 };
 
 
