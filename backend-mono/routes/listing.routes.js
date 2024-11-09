@@ -27,7 +27,7 @@ router.get(
 );
 
 router.post(
-  "/new",
+  "/",
   ClerkExpressRequireAuth(),
   bodyParser.raw({ type: 'application/json' }),
   Controller.newListingHandler

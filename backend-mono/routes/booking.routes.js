@@ -13,7 +13,7 @@ router.get(
 );
 
 router.get(
-  "/:user_id",
+  "/user/:user_id",
   ClerkExpressRequireAuth(),
   bodyParser.raw({ type: 'application/json' }),
   Controller.getBookingByUserIdHandler
