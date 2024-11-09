@@ -42,7 +42,8 @@ const getBookingById = async (booking_id) => {
 
 const newBooking = async (body) => {
   try {
-    const { user_id, listing_id, payment_id, check_in_date, check_out_date, status } = body;
+    console.log("body from frontend ", body);
+    const { user_id, listing_id, check_in_date, check_out_date, status } = body;
 
     // Check if the user exists
     const userExists = await checkIfUserExists(user_id);
@@ -61,7 +62,6 @@ const newBooking = async (body) => {
       data: {
         user_id,
         listing_id,
-        payment_id,
         check_in_date: new Date(check_in_date),
         check_out_date: new Date(check_out_date),
         status,

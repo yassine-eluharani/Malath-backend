@@ -91,7 +91,7 @@ model Booking {
   booking_id           String      @id @default(uuid()) @unique
   check_in_date        DateTime
   check_out_date       DateTime
-  status               String
+  status               StatusBooking      @default(PENDING)
   created_at           DateTime    @default(now())
   updated_at           DateTime    @updatedAt
 
@@ -102,5 +102,7 @@ model Booking {
   listing              Listing     @relation(fields: [listing_id], references: [id])
 }
 
-
-
+enum StatusBooking {
+  CONFIRMED
+  PENDING
+}
