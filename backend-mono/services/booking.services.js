@@ -89,6 +89,23 @@ const newBooking = async (body) => {
   }
 };
 
+const getBookingsWithListingsByUserId = async (user_id) => {
+  try {
+    const bookings = await prisma.booking.findMany({
+      where: {
+        user_id: user_id,
+      },
+      include: {
+        listing: true,
+      },
+    });
+
+    return bookings;
+  } catch (error) {
+    throw new Error("Error fetching bookings with listings: " + error.message);
+  }
+};
+
 
 
 module.exports = {
@@ -96,7 +113,8 @@ module.exports = {
   newBooking,
   getBookingByUserId,
   getBookingById,
-  getBookingByListingId
+  getBookingByListingId,
+  getBookingsWithListingsByUserId
 };
 
 

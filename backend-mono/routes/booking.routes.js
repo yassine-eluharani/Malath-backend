@@ -29,6 +29,13 @@ router.get(
 );
 
 router.get(
+  "/bookings-with-listings/user/:user_id",
+  ClerkExpressRequireAuth(),
+  bodyParser.raw({ type: "application/json" }),
+  Controller.getBookingsWithListingsByUserIdHandler
+);
+
+router.get(
   "/:booking_id",
   ClerkExpressRequireAuth(),
   bodyParser.raw({ type: 'application/json' }),
